@@ -26,6 +26,9 @@ RUN chown -R agent:agent /app
 USER agent
 
 ENV PATH=/home/agent/.local/bin:$PATH
+# Fix: user "agent" có HOME=/app (useradd -d /app) nên Python mặc định tìm package --user ở
+# /app/.local → "No module named 'uvicorn'". Chỉ đúng chỗ đã copy package từ builder.
+ENV PYTHONUSERBASE=/home/agent/.local
 ENV PYTHONPATH=/app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
